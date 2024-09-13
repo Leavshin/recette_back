@@ -1,4 +1,7 @@
 package org.example.recette.repository;
 
-public interface AllergyRepository {
+import org.example.recette.entity.Allergy;
+import org.springframework.data.repository.CrudRepository;
+
+public interface AllergyRepository extends CrudRepository<Allergy, Integer> {
 }
