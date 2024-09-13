@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    networks:
+      - postgres-pgadmin
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    depends_on:
+      - db
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8081:80"
+    networks:
+      - postgres-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: recette@domain.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+  # back
+  spring-docker-container:
+    container_name: springboot
+    ports:
+      - "8080:8080"
+    build:
+#      context: ./recette
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    networks:
+      - postgres-pgadmin
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/recette
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_USERNAME: postgres
+
+networks:
+  postgres-pgadmin:
+
+volumes:
+  local_pgdata:
+  pgadmin_data:
