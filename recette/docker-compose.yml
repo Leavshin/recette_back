@@ -6,7 +6,9 @@ services:
     networks:
       - postgres-pgadmin
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: recette
     ports:
       - "5432:5432"
     volumes:
@@ -41,8 +43,9 @@ services:
     networks:
       - postgres-pgadmin
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/recette
-      SPRING_DATASOURCE_PASSWORD: root
+      DB_SERVER: local_pgdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://local_pgdb:5432/recette
+      SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_USERNAME: postgres
 
 networks:
