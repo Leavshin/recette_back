@@ -25,10 +25,10 @@ public class IngredientService {
         this.ingredientRepository.deleteById(id);
     }
 
-    public Ingredient getIngredientById(String id) {
+    public Ingredient findIngredientById(String id) {
         return this.ingredientRepository.findById(id).orElse(null);
     }
-    public List<Ingredient> getAllIngredient() {
+    public List<Ingredient> findAllIngredients() {
         return (List<Ingredient>) this.ingredientRepository.findAll();
     }
 

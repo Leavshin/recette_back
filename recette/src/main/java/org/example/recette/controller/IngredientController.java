@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingredient")
+@RequestMapping("/ingredient/")
 public class IngredientController {
     private final IngredientService ingredientService;
 
@@ -16,9 +16,9 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<Ingredient>> getAll() {
-        return ResponseEntity.ok(ingredientService.getAllIngredient());
+    @GetMapping("list")
+    public ResponseEntity<List<Ingredient>> listIngredients() {
+        return ResponseEntity.ok(ingredientService.findAllIngredients());
     }
 
     @PostMapping("new")
@@ -26,28 +26,28 @@ public class IngredientController {
         return ResponseEntity.ok(ingredientService.createIngredient(ingredient));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Ingredient> getById(@PathVariable("id") String id) {
-        Ingredient ingredient = ingredientService.getIngredientById(id);
+    @GetMapping("{id}")
+    public ResponseEntity<Ingredient> getIngredient(@PathVariable("id") String id) {
+        Ingredient ingredient = ingredientService.findIngredientById(id);
         if (ingredient == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ingredient);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Ingredient> update(@PathVariable("id") String id, @RequestBody Ingredient updatedIngredient) {
-        Ingredient ingredient = ingredientService.getIngredientById(id);
+    @PutMapping("update/{id}")
+    public ResponseEntity<Ingredient> updateIngredient(@PathVariable("id") String id, @RequestBody Ingredient updatedIngredient) {
+        Ingredient ingredient = ingredientService.findIngredientById(id);
         if (ingredient == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ingredientService.updateIngredient(updatedIngredient));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") String id) {
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> deleteIngredient(@PathVariable("id") String id) {
         ingredientService.deleteIngredient(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 
