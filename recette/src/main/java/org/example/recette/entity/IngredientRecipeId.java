@@ -1,9 +1,10 @@
 package org.example.recette.entity;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,16 +13,21 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 @Embeddable
 public class IngredientRecipeId implements Serializable {
+    @ManyToOne
+    @JoinColumn(name = "id_ingredient")
+    @JsonBackReference
+    private Ingredient ingredient;
 
-    @Column(name = "id_ingredient")
-    private String idIngredient;
+    @ManyToOne
+    @JoinColumn(name = "id_recipe")
+    @JsonBackReference
+    private Recipe recipe;
 
-    @Column(name = "id_recipe")
-    private int idRecipe;
-
-
+    @Override
+    public String toString() {
+        return "IngredientId=" + ingredient.getId() + ", RecipeId=" + recipe.getId();
+    }
 
 }

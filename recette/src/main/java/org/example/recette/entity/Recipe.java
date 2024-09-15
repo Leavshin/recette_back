@@ -1,5 +1,6 @@
 package org.example.recette.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,10 +29,15 @@ public class Recipe {
     private LocalTime cookTime;
     private RecipeCategory category;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Instruction> instructions;
 
-    @OneToMany(mappedBy = "recipe")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "id.recipe", fetch = FetchType.EAGER)
     private List<IngredientRecipe> ingredients;
 
+    @Override
+    public String toString() {
+        return "Recipe {id=" + id + ", name=" + name + ", portion=" + portion + "}";
+    }
 }

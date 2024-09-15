@@ -1,6 +1,5 @@
 package org.example.recette.service;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.recette.entity.Instruction;
 import org.example.recette.repository.InstructionRepository;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,11 @@ public class InstructionService {
         return instructionRepository.save(instruction);
     }
 
-    public Instruction getInstructionById(int id) {
+    public Instruction findInstructionById(int id) {
         return instructionRepository.findById(id).orElse(null);
     }
 
-    public List<Instruction> getAllInstructionsFromRecipe(int recipeId) {
+    public List<Instruction> findAllInstructionsFromRecipe(int recipeId) {
         return this.instructionRepository.findInstructionByRecipeId(recipeId);
     }
 

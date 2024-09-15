@@ -1,5 +1,6 @@
 package org.example.recette.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ingredient {
-
     @Id
     @Column(name = "id_ingredient")
     private String id;
@@ -27,7 +27,13 @@ public class Ingredient {
     @ManyToMany
     private List<Allergy> allergies;
 
-    @OneToMany(mappedBy = "ingredient")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "id.ingredient", fetch = FetchType.EAGER)
     private List<IngredientRecipe> recipes;
+
+    @Override
+    public String toString() {
+        return "Ingredient {id=" + id + ", name=" + name + ", calorie=" + calorie + "}";
+    }
 
 }

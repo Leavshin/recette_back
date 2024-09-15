@@ -1,6 +1,5 @@
 package org.example.recette.service;
 
-import org.example.recette.entity.Instruction;
 import org.example.recette.entity.Recipe;
 import org.example.recette.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -28,14 +27,18 @@ public class RecipeService {
         this.recipeRepository.deleteById(id);
     }
 
-    public Recipe getRecipeById(int id) {
-        return this.recipeRepository.findById(id).orElse(null);
+    public Recipe findRecipeById(int id) {
+        Recipe recipe = this.recipeRepository.findById(id).orElse(null);
+        if (recipe == null) {
+            return null;
+        } else {
+            recipe.setInstructions(this.instructionService.findAllInstructionsFromRecipe(recipe.getId()));
+        }
+        return recipe;
     }
-    public List<Recipe> getAllRecipe() {
+
+    public List<Recipe> findAllRecipes() {
         return (List<Recipe>) this.recipeRepository.findAll();
     }
 
-    public List<Instruction> getAllInstructionsFromRecipeId(int id) {
-        return this.instructionService.getAllInstructionsFromRecipe(id);
-    }
 }
