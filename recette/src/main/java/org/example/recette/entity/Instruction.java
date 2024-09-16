@@ -23,5 +23,8 @@ public class Instruction {
     @JoinColumn(name = "id_recipe")
     private Recipe recipe;
 
-
+    @Override
+    public String toString() {
+        return "Instruction {id=" + id + ", description=" + description + ", step=" + step + "}";
+    }
 }

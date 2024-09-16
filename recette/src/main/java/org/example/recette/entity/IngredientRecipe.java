@@ -14,16 +14,13 @@ import lombok.NoArgsConstructor;
 public class IngredientRecipe {
 
     @EmbeddedId
-    private IngredientRecipeId id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idIngredient")
-    private Ingredient ingredient;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idRecipe")
-    private Recipe recipe;
+    private IngredientRecipeId id = new IngredientRecipeId();
 
     private int quantity;
+
+    @Override
+    public String toString() {
+        return "IngredientRecipe {quantity=" + quantity + "}";
+    }
 
 }
