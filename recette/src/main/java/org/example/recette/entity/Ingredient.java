@@ -1,6 +1,6 @@
 package org.example.recette.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +27,8 @@ public class Ingredient {
     @ManyToMany
     private List<Allergy> allergies;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "id.ingredient", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<IngredientRecipe> recipes;
 
     @Override

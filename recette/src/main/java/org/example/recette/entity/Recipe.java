@@ -32,8 +32,8 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Instruction> instructions;
 
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     @JsonManagedReference
-    @OneToMany(mappedBy = "id.recipe", fetch = FetchType.EAGER)
     private List<IngredientRecipe> ingredients;
 
     @Override
