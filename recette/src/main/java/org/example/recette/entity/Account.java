@@ -1,6 +1,7 @@
 package org.example.recette.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,9 @@ public class Account {
 
     @ManyToMany
     private List<Allergy> allergies;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<UserInventory> inventories;
 
 }

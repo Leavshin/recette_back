@@ -1,6 +1,7 @@
 package org.example.recette.controller;
 
 import org.example.recette.entity.Account;
+import org.example.recette.entity.Ingredient;
 import org.example.recette.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,5 @@ public class AccountController {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }
