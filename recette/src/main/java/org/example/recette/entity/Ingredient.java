@@ -19,10 +19,10 @@ import java.util.List;
 public class Ingredient {
     @Id
     @Column(name = "id_ingredient")
-    private String id;
+    private int id;
     private String name;
     private String unit;
-    private String calorie;
+    private float calorie;
     private IngredientCategory ingredientCategory;
 
     @ElementCollection(targetClass = Allergy.class)

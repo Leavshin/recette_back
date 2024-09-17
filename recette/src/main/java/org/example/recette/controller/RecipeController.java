@@ -1,6 +1,7 @@
 package org.example.recette.controller;
 
 import org.example.recette.entity.Recipe;
+import org.example.recette.service.AccountService;
 import org.example.recette.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,11 @@ import java.util.List;
 @RequestMapping("/recipe/")
 public class RecipeController {
     private final RecipeService recipeService;
+    private final AccountService accountService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, AccountService accountService) {
         this.recipeService = recipeService;
+        this.accountService = accountService;
     }
 
     @GetMapping("list")
@@ -48,6 +51,11 @@ public class RecipeController {
     public ResponseEntity<Void> deleteRecipe(@PathVariable("id") int id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("list_by_inventory")
+    public ResponseEntity<List<Recipe>> listRecipeByInventory(@RequestBody int id) {
+      return ResponseEntity.ok(recipeService.findRecipeByIngredient(accountService.findAccountById(id)));
     }
 
 }

@@ -1,8 +1,9 @@
 package org.example.recette.controller;
 
 import org.example.recette.entity.Account;
-import org.example.recette.entity.Ingredient;
+import org.example.recette.entity.UserInventory;
 import org.example.recette.service.AccountService;
+import org.example.recette.service.UserInventoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
+    private final UserInventoryService userInventoryService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, UserInventoryService userInventoryService) {
         this.accountService = accountService;
+        this.userInventoryService = userInventoryService;
     }
 
     @PostMapping("new")
@@ -44,4 +47,11 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("addIngredients")
+    public ResponseEntity<Void> addIngredients(@RequestBody List<UserInventory> userInventoryList) {
+        for (UserInventory userInventory : userInventoryList) {
+            userInventoryService.create(userInventory);
+        }
+        return ResponseEntity.noContent().build();
+    }
 }
