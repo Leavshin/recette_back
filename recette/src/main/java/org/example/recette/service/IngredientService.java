@@ -21,11 +21,11 @@ public class IngredientService {
         return this.ingredientRepository.save(ingredient);
     }
 
-    public void deleteIngredient(String id) {
+    public void deleteIngredient(int id) {
         this.ingredientRepository.deleteById(id);
     }
 
-    public Ingredient findIngredientById(String id) {
+    public Ingredient findIngredientById(int id) {
         return this.ingredientRepository.findById(id).orElse(null);
     }
     public List<Ingredient> findAllIngredients() {

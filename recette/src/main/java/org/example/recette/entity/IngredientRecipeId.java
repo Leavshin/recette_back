@@ -11,6 +11,6 @@ import java.io.Serializable;
 @Data
 @Embeddable
 public class IngredientRecipeId implements Serializable {
-    private String idIngredient;
+    private int idIngredient;
     private int idRecipe;
 }

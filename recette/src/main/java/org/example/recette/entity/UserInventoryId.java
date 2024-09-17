@@ -13,5 +13,5 @@ import java.io.Serializable;
 @Embeddable
 public class UserInventoryId implements Serializable {
     private int idUser;
-    private String idInventory;
+    private int idInventory;
 }
