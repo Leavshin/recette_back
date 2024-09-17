@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.recette.utils.enums.Allergy;
+import org.example.recette.utils.enums.Preference;
 import org.example.recette.utils.enums.RecipeCategory;
 
 import java.time.LocalTime;
@@ -36,6 +38,12 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<IngredientRecipe> ingredients;
+
+    @ElementCollection(targetClass = Preference.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "recipe_preference", joinColumns = @JoinColumn(name = "id_recipe"))
+    @Column(name = "preferences")
+    private List<Preference> preferences;
 
     @Override
     public String toString() {

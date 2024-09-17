@@ -6,10 +6,13 @@ import org.example.recette.entity.IngredientRecipe;
 import org.example.recette.entity.Recipe;
 import org.example.recette.repository.IngredientRecipeRepository;
 import org.example.recette.repository.RecipeRepository;
+import org.example.recette.utils.enums.Allergy;
+import org.example.recette.utils.enums.Preference;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -17,12 +20,14 @@ public class RecipeService {
     private final InstructionService instructionService;
     private final IngredientRecipeRepository ingredientRecipeRepository;
     private final UserInventoryService userInventoryService;
+    private final AccountService accountService;
 
-    public RecipeService(RecipeRepository recipeRepository, InstructionService instructionService, IngredientRecipeRepository ingredientRecipeRepository, UserInventoryService userInventoryService) {
+    public RecipeService(RecipeRepository recipeRepository, InstructionService instructionService, IngredientRecipeRepository ingredientRecipeRepository, UserInventoryService userInventoryService, AccountService accountService) {
         this.recipeRepository = recipeRepository;
         this.instructionService = instructionService;
         this.ingredientRecipeRepository = ingredientRecipeRepository;
         this.userInventoryService = userInventoryService;
+        this.accountService = accountService;
     }
 
     public Recipe createRecipe(Recipe recipe) {
@@ -76,6 +81,35 @@ public class RecipeService {
                 }
             }
             if (!notFound) {
+                result.add(recipe);
+            }
+        }
+        return result;
+    }
+
+    public List<Recipe> findRecipeByPreference(Preference preference) {
+        return recipeRepository.findRecipesByPreferencesContaining(preference);
+    }
+
+    public List<Recipe> findRecipeByAccountAllergies(int idAccount) {
+        Account account = accountService.findAccountById(idAccount);
+        List<Recipe> recipes;
+        if("AUCUNE".equals(account.getPreference().name())) {
+            recipes = findAllRecipes();
+        } else {
+            recipes= findRecipeByPreference(account.getPreference());
+        }
+        List<Allergy> allergies = account.getAllergies();
+        List<Recipe> result = new ArrayList<>();
+        for(Recipe recipe : recipes) {
+            boolean notFound = false;
+            for(IngredientRecipe ingredient : recipe.getIngredients()) {
+                if(!allergies.isEmpty() && !ingredient.getIngredient().getAllergies().isEmpty() && !allergies.contains(ingredient.getIngredient().getAllergies())) {
+                    notFound = true;
+                    break;
+                }
+            }
+            if(!notFound) {
                 result.add(recipe);
             }
         }
