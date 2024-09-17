@@ -1,6 +1,7 @@
 package org.example.recette.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,5 +39,10 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     private Preference preference;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<UserInventory> inventories;
+
 
 }
