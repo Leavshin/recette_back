@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.recette.utils.enums.Allergy;
 import org.example.recette.utils.enums.IngredientCategory;
 
 import java.util.List;
@@ -25,10 +24,7 @@ public class Ingredient {
     private String calorie;
     private IngredientCategory ingredientCategory;
 
-    @ElementCollection(targetClass = Allergy.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "ingredient_allergy", joinColumns = @JoinColumn(name = "id_ingredient"))
-    @Column(name = "allergies")
+    @ManyToMany
     private List<Allergy> allergies;
 
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
