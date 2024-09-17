@@ -23,6 +23,7 @@ public class Recipe {
     @Column(name = "id_recipe")
     private int id;
     private String name;
+    private String description;
     private int portion;
     private String imageUrl;
     private LocalTime prepTime;
