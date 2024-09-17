@@ -1,5 +1,8 @@
 package org.example.recette.utils.enums;
 
 public enum RecipeCategory {
-    MEAL
+    ENTREE,
+    PLAT,
+    DESSERT,
+    SAUCE
 }

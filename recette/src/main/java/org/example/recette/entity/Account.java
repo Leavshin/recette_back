@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.recette.utils.enums.Allergy;
+import org.example.recette.utils.enums.Preference;
 
 import java.util.List;
 
@@ -28,7 +30,13 @@ public class Account {
     @ManyToMany
     private List<Recipe> favoriteRecipes;
 
-    @ManyToMany
+    @ElementCollection(targetClass = Allergy.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "account_allergy", joinColumns = @JoinColumn(name = "id_account"))
+    @Column(name = "allergies")
     private List<Allergy> allergies;
+
+    @Enumerated(EnumType.STRING)
+    private Preference preference;
 
 }
