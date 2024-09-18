@@ -36,12 +36,12 @@ public class AccountController {
         return ResponseEntity.ok(accountService.findAccountById(id));
     }
 
-    @GetMapping("update/{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable int id, @RequestBody Account account) {
         return ResponseEntity.ok(accountService.updateAccount(account));
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable int id) {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
@@ -51,6 +51,14 @@ public class AccountController {
     public ResponseEntity<Void> addIngredients(@RequestBody List<UserInventory> userInventoryList) {
         for (UserInventory userInventory : userInventoryList) {
             userInventoryService.create(userInventory);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("removeIngredients")
+    public ResponseEntity<Void> removeIngredients(@RequestBody List<UserInventory> userInventoryList) {
+        for (UserInventory userInventory : userInventoryList) {
+            userInventoryService.delete(userInventory);
         }
         return ResponseEntity.noContent().build();
     }
