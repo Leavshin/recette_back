@@ -58,4 +58,9 @@ public class RecipeController {
       return ResponseEntity.ok(recipeService.findRecipeByIngredient(accountService.findAccountById(id)));
     }
 
+    @GetMapping("list_by_pref_and_allergy")
+    public ResponseEntity<List<Recipe>> listRecipeByAccountPrefAndAllergy(@RequestBody int id) {
+        return ResponseEntity.ok(recipeService.findRecipeByAccountAllergies(id));
+    }
+
 }
