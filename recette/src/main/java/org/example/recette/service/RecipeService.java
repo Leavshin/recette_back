@@ -88,28 +88,31 @@ public class RecipeService {
     }
 
     public List<Recipe> findRecipeByPreference(Preference preference) {
-        return recipeRepository.findRecipesByPreferencesContaining(preference);
+        List<Recipe> recipes;
+        if("AUCUNE".equals(preference.name())) {
+            recipes = findAllRecipes();
+        } else {
+            recipes= recipeRepository.findRecipesByPreferencesContaining(preference);
+        }
+        return recipes;
     }
 
     public List<Recipe> findRecipeByAccountAllergies(int idAccount) {
         Account account = accountService.findAccountById(idAccount);
-        List<Recipe> recipes;
-        if("AUCUNE".equals(account.getPreference().name())) {
-            recipes = findAllRecipes();
-        } else {
-            recipes= findRecipeByPreference(account.getPreference());
-        }
+        List<Recipe> recipes = findRecipeByPreference(account.getPreference());
         List<Allergy> allergies = account.getAllergies();
         List<Recipe> result = new ArrayList<>();
         for(Recipe recipe : recipes) {
-            boolean notFound = false;
+            boolean found = false;
             for(IngredientRecipe ingredient : recipe.getIngredients()) {
-                if(!allergies.isEmpty() && !ingredient.getIngredient().getAllergies().isEmpty() && !allergies.contains(ingredient.getIngredient().getAllergies())) {
-                    notFound = true;
+                // Vérifie si un ingrédient de la recette possède une allergie de l'utilisateur
+                boolean containsAnyAllergy = allergies.stream().anyMatch(allergy -> ingredient.getIngredient().getAllergies().contains(allergy));
+                if(!allergies.isEmpty() && !ingredient.getIngredient().getAllergies().isEmpty() && containsAnyAllergy) {
+                    found = true;
                     break;
                 }
             }
-            if(!notFound) {
+            if(!found) {
                 result.add(recipe);
             }
         }
