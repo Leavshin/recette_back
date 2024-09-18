@@ -1,0 +1,65 @@
+services:
+  db:
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    networks:
+      - web-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: recette
+    ports:
+      - "5432:5432"
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    depends_on:
+      - db
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8081:80"
+    networks:
+      - web-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: recette@domain.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+  # back
+  spring-docker-container:
+    container_name: springboot
+    ports:
+      - "8080:8080"
+    build:
+      context: ./recette
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    networks:
+      - web-network
+    environment:
+      DB_SERVER: local_pgdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://local_pgdb:5432/recette
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: postgres
+
+  app:
+    build:
+      context: ./docker_front # Répertoire contenant le Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80" # Mappe le port 82 du conteneur au port 82 de l'hôte
+    networks:
+      - web-network
+
+networks:
+  web-network:
+
+volumes:
+  local_pgdata:
+  pgadmin_data:
