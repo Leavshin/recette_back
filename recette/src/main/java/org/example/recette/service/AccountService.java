@@ -14,12 +14,10 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final UserInventoryRepository userInventoryRepository;
-    private final RecipeService recipeService;
 
-    public AccountService(AccountRepository accountRepository, UserInventoryRepository userInventoryRepository, RecipeService recipeService) {
+    public AccountService(AccountRepository accountRepository, UserInventoryRepository userInventoryRepository) {
         this.accountRepository = accountRepository;
         this.userInventoryRepository = userInventoryRepository;
-        this.recipeService = recipeService;
     }
 
     public Account createAccount(Account account) {
@@ -58,28 +56,6 @@ public class AccountService {
 
     public Account findAccountByEmail(String email) {
         return accountRepository.findAccountByEmail(email);
-    }
-
-    private boolean checkRecipeIsInAccount(Recipe recipe, Account account) {
-        return account.getFavoriteRecipes().contains(recipe);
-    }
-  
-    public void addRecipeToFavorite(int idRecipe, int idAccount) {
-        Recipe recipeToAdd = recipeService.findRecipeById(idRecipe);
-        Account account = accountRepository.findById(idAccount).orElse(null);
-        if(recipeToAdd != null && account != null && !checkRecipeIsInAccount(recipeToAdd, account)) {
-            account.getFavoriteRecipes().add(recipeToAdd);
-            accountRepository.save(account);
-        }
-    }
-  
-    public void removeRecipeFromFavorite(int idRecipe, int idAccount) {
-        Recipe recipeToRemove = recipeService.findRecipeById(idRecipe);
-        Account account = accountRepository.findById(idAccount).orElse(null);
-        if(recipeToRemove != null && account != null && checkRecipeIsInAccount(recipeToRemove, account)) {
-            account.getFavoriteRecipes().remove(recipeToRemove);
-            accountRepository.save(account);
-        }
     }
 
 }
