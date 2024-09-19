@@ -1,10 +1,12 @@
 package org.example.recette.service;
 
+import org.example.recette.dto.AccountDTO;
 import org.example.recette.entity.*;
 import org.example.recette.repository.AccountRepository;
 import org.example.recette.repository.UserInventoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +47,14 @@ public class AccountService {
 
     public List<Account> findAllAccounts() {
         return (List<Account>) accountRepository.findAll();
+    }
+
+    public Account findAccountByEmail(String email) {
+        return accountRepository.findAccountByEmail(email);
+    }
+
+    public Account findAccountByEmailAndPassword(String email, String password) {
+        return accountRepository.findAccountByEmailAndPassword(email, password);
     }
 
 }

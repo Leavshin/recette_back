@@ -60,6 +60,8 @@ public class AccountController {
         for (UserInventory userInventory : userInventoryList) {
             userInventoryService.delete(userInventory);
         }
+        return ResponseEntity.noContent().build();
+    }
 
     @PostMapping("add_recipe_to_favorite/{idAccount}")
     public ResponseEntity<Void> addRecipeToFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
