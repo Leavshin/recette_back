@@ -30,4 +30,8 @@ public class UserInventoryService {
         return ingredients;
     }
 
+    public void delete(UserInventory userInventory) {
+        userInventoryRepository.delete(userInventory);
+    }
+
 }

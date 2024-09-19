@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.example.recette.utils.enums.Allergy;
 import org.example.recette.utils.enums.IngredientCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,11 +30,11 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "ingredient_allergy", joinColumns = @JoinColumn(name = "id_ingredient"))
     @Column(name = "allergies")
-    private List<Allergy> allergies;
+    private List<Allergy> allergies = new ArrayList<>();
 
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<IngredientRecipe> recipes;
+    private List<IngredientRecipe> recipes = new ArrayList<>();
 
     @Override
     public String toString() {
