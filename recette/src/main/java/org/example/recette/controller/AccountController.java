@@ -55,11 +55,22 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 
+
     @DeleteMapping("removeIngredients")
     public ResponseEntity<Void> removeIngredients(@RequestBody List<UserInventory> userInventoryList) {
         for (UserInventory userInventory : userInventoryList) {
             userInventoryService.delete(userInventory);
         }
+
+    @PostMapping("add_recipe_to_favorite/{idAccount}")
+    public ResponseEntity<Void> addRecipeToFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
+        accountService.addRecipeToFavorite(idRecipe, idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("remove_recipe_from_favorite/{idAccount}")
+    public ResponseEntity<Void> removeRecipeFromFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
+        accountService.removeRecipeFromFavorite(idRecipe, idAccount);
         return ResponseEntity.noContent().build();
     }
 }
