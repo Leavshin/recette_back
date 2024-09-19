@@ -1,9 +1,6 @@
 package org.example.recette.service;
 
-import org.example.recette.entity.Account;
-import org.example.recette.entity.Ingredient;
-import org.example.recette.entity.IngredientRecipe;
-import org.example.recette.entity.Recipe;
+import org.example.recette.entity.*;
 import org.example.recette.repository.IngredientRecipeRepository;
 import org.example.recette.repository.RecipeRepository;
 import org.example.recette.utils.enums.Allergy;
@@ -35,6 +32,11 @@ public class RecipeService {
             ingredient.setRecipe(newRecipe);
             ingredientRecipeRepository.save(ingredient);
         }
+        for (Instruction instruction : recipe.getInstructions()) {
+            instruction.setRecipe(newRecipe);
+            instructionService.createInstruction(instruction);
+        }
+
         return newRecipe;
     }
 
@@ -44,8 +46,12 @@ public class RecipeService {
 
     public void deleteRecipe(int id) {
         List<IngredientRecipe> ingredientRecipes = ingredientRecipeRepository.findByRecipe(findRecipeById(id));
+        List<Instruction> instructions = instructionService.findAllInstructionsFromRecipe(id);
         for (IngredientRecipe ingredientRecipe : ingredientRecipes) {
             ingredientRecipeRepository.delete(ingredientRecipe);
+        }
+        for (Instruction instruction : instructions) {
+            instructionService.deleteInstruction(instruction.getId());
         }
         this.recipeRepository.deleteById(id);
     }
@@ -74,7 +80,6 @@ public class RecipeService {
         for (Recipe recipe : recipes) {
             boolean notFound = false;
             for (IngredientRecipe ingredient : recipe.getIngredients()) {
-                System.out.println(recipe.getIngredients());
                 if (!ingredients.contains(ingredient.getIngredient())) {
                     notFound = true;
                 }
@@ -116,5 +121,27 @@ public class RecipeService {
             }
         }
         return result;
+    }
+
+    private boolean checkRecipeIsInAccount(Recipe recipe, Account account) {
+        return account.getFavoriteRecipes().contains(recipe);
+    }
+
+    public void addRecipeToFavorite(int idRecipe, int idAccount) {
+        Recipe recipeToAdd = this.findRecipeById(idRecipe);
+        Account account = accountService.findAccountById(idAccount);
+        if(recipeToAdd != null && account != null && !checkRecipeIsInAccount(recipeToAdd, account)) {
+            account.getFavoriteRecipes().add(recipeToAdd);
+            accountService.updateAccount(account);
+        }
+    }
+
+    public void removeRecipeFromFavorite(int idRecipe, int idAccount) {
+        Recipe recipeToRemove = this.findRecipeById(idRecipe);
+        Account account = accountService.findAccountById(idAccount);
+        if(recipeToRemove != null && account != null && checkRecipeIsInAccount(recipeToRemove, account)) {
+            account.getFavoriteRecipes().remove(recipeToRemove);
+            accountService.updateAccount(account);
+        }
     }
 }

@@ -53,7 +53,7 @@ services:
       context: ./docker_front
       dockerfile: Dockerfile
     ports:
-      - "4200:80"
+      - "4201:80"
     networks:
       - web-network
 

@@ -55,7 +55,6 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 
-
     @DeleteMapping("removeIngredients")
     public ResponseEntity<Void> removeIngredients(@RequestBody List<UserInventory> userInventoryList) {
         for (UserInventory userInventory : userInventoryList) {
@@ -73,4 +72,5 @@ public class AccountController {
         accountService.removeRecipeFromFavorite(idRecipe, idAccount);
         return ResponseEntity.noContent().build();
     }
+
 }

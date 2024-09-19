@@ -47,7 +47,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.updateRecipe(updatedRecipe));
     }
 
-    @DeleteMapping("delete/{id}")
+    @GetMapping("delete/{id}")
     public ResponseEntity<Void> deleteRecipe(@PathVariable("id") int id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
@@ -61,6 +61,18 @@ public class RecipeController {
     @GetMapping("list_by_pref_and_allergy")
     public ResponseEntity<List<Recipe>> listRecipeByAccountPrefAndAllergy(@RequestBody int id) {
         return ResponseEntity.ok(recipeService.findRecipeByAccountAllergies(id));
+    }
+
+    @PostMapping("add_recipe_to_favorite/{idAccount}")
+    public ResponseEntity<Void> addRecipeToFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
+        recipeService.addRecipeToFavorite(idRecipe, idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("remove_recipe_from_favorite/{idAccount}")
+    public ResponseEntity<Void> removeRecipeFromFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
+        recipeService.removeRecipeFromFavorite(idRecipe, idAccount);
+        return ResponseEntity.noContent().build();
     }
 
 }
