@@ -25,11 +25,8 @@ public class AuthService {
         return true;
     }
 
-    public boolean login(AccountDTO accountDTO) {
-        System.out.println(accountDTO);
-        Account user = accountService.findAccountByEmailAndPassword(accountDTO.getEmail(), accountDTO.getPassword());
-        System.out.println(user);
-        return user != null;
+    public Account login(AccountDTO accountDTO) {
+        return accountService.findAccountByEmailAndPassword(accountDTO.getEmail(), accountDTO.getPassword());
     }
 
     private Account convertToAccount(AccountDTO accountDTO) {
@@ -42,5 +39,4 @@ public class AuthService {
                 .build();
         return account;
     }
-
 }
