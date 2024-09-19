@@ -122,4 +122,26 @@ public class RecipeService {
         }
         return result;
     }
+
+    private boolean checkRecipeIsInAccount(Recipe recipe, Account account) {
+        return account.getFavoriteRecipes().contains(recipe);
+    }
+
+    public void addRecipeToFavorite(int idRecipe, int idAccount) {
+        Recipe recipeToAdd = this.findRecipeById(idRecipe);
+        Account account = accountService.findAccountById(idAccount);
+        if(recipeToAdd != null && account != null && !checkRecipeIsInAccount(recipeToAdd, account)) {
+            account.getFavoriteRecipes().add(recipeToAdd);
+            accountService.updateAccount(account);
+        }
+    }
+
+    public void removeRecipeFromFavorite(int idRecipe, int idAccount) {
+        Recipe recipeToRemove = this.findRecipeById(idRecipe);
+        Account account = accountService.findAccountById(idAccount);
+        if(recipeToRemove != null && account != null && checkRecipeIsInAccount(recipeToRemove, account)) {
+            account.getFavoriteRecipes().remove(recipeToRemove);
+            accountService.updateAccount(account);
+        }
+    }
 }

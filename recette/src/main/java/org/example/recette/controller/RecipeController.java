@@ -63,4 +63,16 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.findRecipeByAccountAllergies(id));
     }
 
+    @PostMapping("add_recipe_to_favorite/{idAccount}")
+    public ResponseEntity<Void> addRecipeToFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
+        recipeService.addRecipeToFavorite(idRecipe, idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("remove_recipe_from_favorite/{idAccount}")
+    public ResponseEntity<Void> removeRecipeFromFavorite(@RequestBody int idRecipe, @PathVariable int idAccount) {
+        recipeService.removeRecipeFromFavorite(idRecipe, idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
 }
