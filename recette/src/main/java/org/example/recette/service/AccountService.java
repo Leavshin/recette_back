@@ -51,17 +51,19 @@ public class AccountService {
         return (List<Account>) accountRepository.findAll();
     }
 
-    public Account findAccountByEmail(String email) {
-        return accountRepository.findAccountByEmail(email);
-    }
 
     public Account findAccountByEmailAndPassword(String email, String password) {
         return accountRepository.findAccountByEmailAndPassword(email, password);
     }
 
+    public Account findAccountByEmail(String email) {
+        return accountRepository.findAccountByEmail(email);
+    }
+
     private boolean checkRecipeIsInAccount(Recipe recipe, Account account) {
         return account.getFavoriteRecipes().contains(recipe);
     }
+  
     public void addRecipeToFavorite(int idRecipe, int idAccount) {
         Recipe recipeToAdd = recipeService.findRecipeById(idRecipe);
         Account account = accountRepository.findById(idAccount).orElse(null);
@@ -70,6 +72,7 @@ public class AccountService {
             accountRepository.save(account);
         }
     }
+  
     public void removeRecipeFromFavorite(int idRecipe, int idAccount) {
         Recipe recipeToRemove = recipeService.findRecipeById(idRecipe);
         Account account = accountRepository.findById(idAccount).orElse(null);
