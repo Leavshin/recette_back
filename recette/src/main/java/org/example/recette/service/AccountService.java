@@ -47,4 +47,11 @@ public class AccountService {
         return (List<Account>) accountRepository.findAll();
     }
 
+    public Account findAccountByEmailAndPassword(String email, String password) {
+        return accountRepository.findAccountByEmailAndPassword(email, password);
+    }
+
+    public Account findAccountByEmail(String email) {
+        return accountRepository.findAccountByEmail(email);
+    }
 }
