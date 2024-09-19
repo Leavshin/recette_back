@@ -1,5 +1,6 @@
 package org.example.recette.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class Instruction {
     private int id;
     private String description;
     private int step;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_recipe")
     private Recipe recipe;
