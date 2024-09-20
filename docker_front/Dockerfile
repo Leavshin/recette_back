@@ -1,4 +1,4 @@
-FROM nginx:latest AS git
+FROM ubuntu:latest AS git
 
 WORKDIR /usr/share/nginx/html
 
@@ -26,6 +26,10 @@ RUN npm run build
 
 FROM nginx:latest
 
-COPY --from=build /app/dist/recette_front/browser /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+
+COPY --from=build /app/dist/recette_front/browser .
+
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
