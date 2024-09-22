@@ -1,4 +1,7 @@
 package org.example.recette.repository;
 
-public interface IngredientRepository {
+import org.example.recette.entity.Ingredient;
+import org.springframework.data.repository.CrudRepository;
+
+public interface IngredientRepository extends CrudRepository<Ingredient, Integer> {
 }

@@ -4,14 +4,17 @@ services:
     container_name: local_pgdb
     restart: always
     networks:
-      - postgres-pgadmin
+      - web-network
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: recette
     ports:
       - "5432:5432"
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - local_pgdata:/var/lib/postgresql/data
-
+      
   pgadmin:
     depends_on:
       - db
@@ -21,7 +24,7 @@ services:
     ports:
       - "8081:80"
     networks:
-      - postgres-pgadmin
+      - web-network
     environment:
       PGADMIN_DEFAULT_EMAIL: recette@domain.com
       PGADMIN_DEFAULT_PASSWORD: root
@@ -34,19 +37,29 @@ services:
     ports:
       - "8080:8080"
     build:
-#      context: ./recette
+      context: ./recette
       dockerfile: Dockerfile
     depends_on:
       - db
     networks:
-      - postgres-pgadmin
+      - web-network
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/recette
-      SPRING_DATASOURCE_PASSWORD: root
+      DB_SERVER: local_pgdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://local_pgdb:5432/recette
+      SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_USERNAME: postgres
 
+  app:
+    build:
+      context: ./docker_front
+      dockerfile: Dockerfile
+    ports:
+      - "4201:80"
+    networks:
+      - web-network
+
 networks:
-  postgres-pgadmin:
+  web-network:
 
 volumes:
   local_pgdata:
