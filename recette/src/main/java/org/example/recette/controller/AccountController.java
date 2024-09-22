@@ -48,14 +48,14 @@ public class AccountController {
     }
 
     @PostMapping("addIngredients")
-    public ResponseEntity<Void> addIngredients(@RequestBody List<UserInventory> userInventoryList) {
+    public ResponseEntity<List<UserInventory>> addIngredients(@RequestBody List<UserInventory> userInventoryList) {
         for (UserInventory userInventory : userInventoryList) {
-            userInventoryService.create(userInventory);
+            userInventory = userInventoryService.create(userInventory);
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(userInventoryList);
     }
 
-    @DeleteMapping("removeIngredients")
+    @PostMapping("removeIngredients")
     public ResponseEntity<Void> removeIngredients(@RequestBody List<UserInventory> userInventoryList) {
         for (UserInventory userInventory : userInventoryList) {
             userInventoryService.delete(userInventory);

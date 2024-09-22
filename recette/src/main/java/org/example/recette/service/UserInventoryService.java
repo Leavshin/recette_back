@@ -19,7 +19,14 @@ public class UserInventoryService {
     }
 
     public UserInventory create(UserInventory userInventory) {
-        return userInventoryRepository.save(userInventory);
+        UserInventory newUserInventory = userInventoryRepository.findByAccountAndIngredient(userInventory.getAccount(), userInventory.getIngredient());
+        if (newUserInventory != null) {
+            newUserInventory.setQuantity(newUserInventory.getQuantity() + userInventory.getQuantity());
+            this.delete(userInventory);
+        } else {
+            newUserInventory = userInventory;
+        }
+        return userInventoryRepository.save(newUserInventory);
     }
     public List<Ingredient> findByAccount (Account account) {
         List<UserInventory> userInventoryList = userInventoryRepository.findByAccount(account);
