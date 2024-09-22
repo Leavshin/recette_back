@@ -7,10 +7,11 @@
 
 ## Lancement de l'application
 
-Pour installer l'application, lancez un terminal et faites la commande ci-dessous dans le dossier en local que vous souhaitez:
+Pour installer l'application, lancez un terminal et faites les commandes ci-dessous dans le dossier en local que vous souhaitez:
 
 ```bash
 git clone https://github.com/Leavshin/recette_back.git
+git checkout dev
 ```
 
 Déplacez-vous dans le dossier nouvellement créé puis lancez le conteneur docker (n'oubliez pas de lancer docker desktop au préalable):
@@ -28,4 +29,5 @@ docker-compose up -d --build
 Si vous voulez accéder au projet angular : 
 ```bash
 git clone https://github.com/Leavshin/recette_front.git
+git checkout dev
 ```
